@@ -4,6 +4,42 @@
 #  DRAFT! DO NOT USE IT!
 #
 
+*******
+sudo mkdir /opt/openvpn-ui
+cd /opt/openvpn-ui/
+
+sudo apt install openvpn easy-rsa -y
+
+wget https://github.com/d3vilh/openvpn-ui/archive/refs/tags/0.9.4.1.tar.gz
+
+tar -xf 0.9.4.1.tar.gz
+
+cd openvpn-ui-0.9.4.1/
+
+echo -e "PATH=\$PATH:/usr/local/go/bin" | sudo tee /etc/profile.d/golang.sh >/dev/null
+
+cd /tmp
+wget https://go.dev/dl/go1.21.4.linux-amd64.tar.gz
+
+sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz
+
+rm -f go1.21.4.linux-amd64.tar.gz
+
+source /etc/profile.d/golang.sh
+
+go get github.com/beego/beego/v2@latest
+
+
+sh-Test:/opt/openvpn-ui/openvpn-ui-0.9.4.1# export HOME=/root
+root@GoPhish-Test:/opt/openvpn-ui/openvpn-ui-0.9.4.1# echo $HOME
+/root
+root@GoPhish-Test:/opt/openvpn-ui/openvpn-ui-0.9.4.1# mkdir -p $HOME/.config
+
+
+go env -w GOFLAGS="-buildvcs=false" && bee version && CGO_ENABLED=1 CC=musl-gcc bee pack -exr='^vendor|^ace.tar.bz2|^data.db|^build|^README.md|^docs' && cd /app/qrencode && go build -o qrencode main.go && chmod +x /app/qrencode/qrencode && cp -p /app/qrencode/qrencode /go/src/github.com/d3vilh/openvpn-ui/
+*******
+
+
 # All the variables
 QRFILE="qrencode"
 UIFILE="openvpn-ui.tar.gz"
@@ -48,7 +84,7 @@ go mod download
 echo "Installing BeeGo v2"
 go install github.com/beego/bee/v2@develop
 source ~/.bashrc # reload bashrc to get bee command
-echo "Clonning qrencode into build directory"
+echo "Cloning qrencode into build directory"
 git clone https://github.com/d3vilh/qrencode
 
 # Set environment variables
